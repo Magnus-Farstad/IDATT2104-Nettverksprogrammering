@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public class WebServer {
 
-    static final int PORT = 1250;
+    static final int PORT = 80;
 
     private ServerSocket serverSocket;
     private Socket connection;
@@ -18,13 +18,9 @@ public class WebServer {
 
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
-        System.out.println("Before accept");
         connection = serverSocket.accept();
-        System.out.println("After accept");
         writer = new PrintWriter(connection.getOutputStream());
-        writer.println("Hei du er tilkoblet");
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        System.out.println("Før http header");
 
         writer.println("HTTP/1.0 200 OK");
         writer.println("Content-Type: text/html; charset=utf-8");
@@ -35,7 +31,6 @@ public class WebServer {
         writer.println("<h1>You are connected</h1>");
         writer.println("<h3>Your headers, as requested:</h3>");
         writer.println("<ul>");
-        System.out.println("midt i http header");
 
         readLines();
 
@@ -43,7 +38,6 @@ public class WebServer {
         writer.println("</body>");
         writer.println("</html>");
         writer.flush();
-        System.out.println("Etter i http header");
     }
 
     private void readLines() throws IOException {
@@ -63,9 +57,7 @@ public class WebServer {
 
     public static void main(String[] args) throws IOException {
         WebServer server = new WebServer();
-        System.out.println("New webserver");
         server.start(PORT);
-        System.out.println("server started");
         server.stop();
     }
 
