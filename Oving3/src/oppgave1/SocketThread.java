@@ -7,57 +7,60 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-public class SocketThread extends Thread{
+public class SocketThread extends Thread {
     Socket forbindelse;
+
     public SocketThread(Socket forbindelse) {
         this.forbindelse = forbindelse;
     }
 
     @Override
     public void run() {
-        System.out.println("Tråd-ID: " + this.getId() + " har koblet til tjeneren");
-
         try {
             /* Åpner strømmer for kommunikasjon med klientprogrammet */
-            InputStreamReader leseforbindelse = new InputStreamReader(this.forbindelse.getInputStream());
+            InputStreamReader leseforbindelse = new InputStreamReader(forbindelse.getInputStream());
             BufferedReader leseren = new BufferedReader(leseforbindelse);
-            PrintWriter skriveren = new PrintWriter(this.forbindelse.getOutputStream(), true);
+            PrintWriter skriveren = new PrintWriter(forbindelse.getOutputStream(), true);
 
             /* Sender innledning til klienten */
-            skriveren.println("Hei, du har kontakt med tjenersiden! Thread id: " + this.getId());
+            skriveren.println("Hei, du har kontakt med tjenersiden!");
+            System.out.println("Klient med tråd-ID: " + this.getId() + " har koblet seg til");
             skriveren.println("Skriv et regnestykke, så skal jeg regne det ut!");
 
             /* Mottar data fra klienten */
             String enLinje = leseren.readLine();  // mottar en linje med tekst
+
             while (enLinje != null) {  // forbindelsen p� klientsiden er lukket
                 StringTokenizer st = new StringTokenizer(enLinje); //splitter opp teksten
-            /*
-            if(enLinje.contains("[a-zA-Z]+")){
-                skriveren.println("Du kan ikke skrive inn bokstaver!");
-            }*/
 
-                int result = 0;
-                int firstOperand = Integer.parseInt(st.nextToken());
-                String operand = st.nextToken();
-                int secondOperand = Integer.parseInt(st.nextToken());
-                if(operand.equals("+")){
-                    result = firstOperand + secondOperand;
+                if(enLinje.matches("[a-zA-Z]+")) {
+                    skriveren.println("Kan ikke ha bokstav");
                 }else{
-                    result = firstOperand - secondOperand;
+                    int result = 0;
+                    int firstOperand = Integer.parseInt(st.nextToken());
+                    String operator = st.nextToken();
+                    int secondOperand = Integer.parseInt(st.nextToken());
+                    if (operator.equals("+")) {
+                        result = firstOperand + secondOperand;
+                        System.out.println("Klient med tråd-ID: " + this.getId() + " skrev: " + enLinje);
+                        skriveren.println("Svaret er: " + result);  // sender svar til klienten
+                    } else if(operator.equals("-")) {
+                        result = firstOperand - secondOperand;
+                        System.out.println("Klient med tråd-ID: " + this.getId() + " skrev: " + enLinje);
+                        skriveren.println("Svaret er: " + result);  // sender svar til klienten
+                    }else{
+                        skriveren.println("Svaret er ugyldig");
+                    }
                 }
-                skriveren.println();
-                System.out.println("Klient med tråd-ID " + this.getId() + " skrev: " + enLinje);
-                skriveren.println("Svaret er: " + result);  // sender svar til klienten
                 enLinje = leseren.readLine();
             }
-
             /* Lukker forbindelsen */
             leseren.close();
             skriveren.close();
-            this.forbindelse.close();
+            forbindelse.close();
 
-        } catch (IOException | ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        }catch(IOException e){
+            System.out.println(e.getMessage());
         }
     }
 }
