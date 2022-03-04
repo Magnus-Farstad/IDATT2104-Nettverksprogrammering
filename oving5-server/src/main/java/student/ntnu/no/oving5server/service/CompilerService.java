@@ -9,29 +9,17 @@ import java.io.BufferedWriter;
 
 @Service
 public class CompilerService {
+    private String message = "";
 
-//    public static void main(String[] args) {
-//        System.out.println("Hello World!!!");
-//    }
+    public String runCode(SourceCode sourceCode) throws IOException {
+        System.out.println("runCode() called");
 
-    public String doCompile(SourceCode sourceCode) throws IOException {
-
-        System.out.println("doCompile() called");
-        File file = new File("/Users/Farstad/OneDrive/Skole/Andre_aar/Semester_4/Nettverksprogrammering/oving5-server/compile/main.cpp");
+        File file = new File("D:\\Skole\\Semester_4\\Nettverksprogrammering\\Ovinger\\IDATT2104-Nettverksprogrammering\\oving5-server\\compile\\main.cpp");
         StringBuilder output = new StringBuilder();
         try (FileWriter fileWriter = new FileWriter(file);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
 
-            bufferedWriter.append(sourceCode.getSourceCode());
-            sourceCode.setOutput("Output fra server!!");
-
-            Process process = Runtime.getRuntime().exec("docker build --tag java-docker .");
             Process process2 = Runtime.getRuntime().exec("docker run java-docker");
-//            process.waitFor();
-//            System.out.println("Finished compiling");
-//            Process proc = Runtime.getRuntime().exec("java " + process);
-//            System.out.println("Finished running");
-
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(process2.getInputStream()));
             String s = null;
@@ -49,5 +37,22 @@ public class CompilerService {
         }
 
         return output.toString();
+    }
+
+    public void doCompile(SourceCode sourceCode) {
+        System.out.println("doCompile() called");
+        File file = new File("D:\\Skole\\Semester_4\\Nettverksprogrammering\\Ovinger\\IDATT2104-Nettverksprogrammering\\oving5-server\\compile\\main.cpp");
+
+        try (FileWriter fileWriter = new FileWriter(file);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+
+            bufferedWriter.append(sourceCode.getSourceCode());
+
+            Process process = Runtime.getRuntime().exec("docker build --tag java-docker .");
+            System.out.println(process.waitFor());
+
+        } catch (Exception exception) {
+            System.out.println(exception);
+        }
     }
 }
