@@ -100,7 +100,8 @@ html {
   background-color: rgb(84, 83, 81);
   width: 800px;
   margin: 80px auto;
-  box-shadow: 2px 3px 3px 3px;
+  box-shadow: 3px 5px 5px 5px rgba(194, 194, 194, 0.96);
+  border-radius: 10px;
 }
 .content {
   margin: 10px;
