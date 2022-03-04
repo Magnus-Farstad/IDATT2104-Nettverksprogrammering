@@ -13,7 +13,7 @@
         >
         </textarea>
         <div id="buttonContainer">
-          <button id="compileButton">Compile</button>
+          <button id="runButton">Run</button>
         </div>
       </div>
       <div class="input">
@@ -29,11 +29,12 @@
       </div>
       <p id="info"></p>
     </form>
+    <button id="compileButton" @click="compileCode">Compile</button>
   </div>
 </template>
 
 <script>
-import { runCode } from "@/utils/apiUtils";
+import { doCompile, runCode } from "@/utils/apiUtils";
 
 export default {
   name: "CompilerComponent",
@@ -60,12 +61,22 @@ export default {
       const apiCallObject = {
         sourceCode: this.inputCode,
         output: "",
+        action: "run",
       };
       //console.log(apiCallObject);
       let response = await runCode(apiCallObject);
       console.log(response);
 
       this.output = response.output;
+    },
+    async compileCode() {
+      const apiCallObject = {
+        sourceCode: this.inputCode,
+        action: "compile",
+      };
+      //console.log(apiCallObject);
+      let response = await doCompile(apiCallObject);
+      console.log(response);
     },
   },
 };
