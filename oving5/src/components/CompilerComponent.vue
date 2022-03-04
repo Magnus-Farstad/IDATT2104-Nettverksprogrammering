@@ -1,7 +1,7 @@
 <template>
   <div id="container">
-    <h1>C++ compile!</h1>
-    <form class="content">
+    <h2>C++ compile & run!</h2>
+    <form class="content" @submit.prevent="submitForm">
       <div class="input">
         <label for="inputArea">Input code:</label>
         <textarea
@@ -21,9 +21,10 @@
           width="100%"
           name="outputArea"
           rows="20"
+          v-model="output"
         ></textarea>
       </div>
-      <button @click="submitForm">Compile</button>
+      <button>Compile</button>
       <p id="info"></p>
     </form>
   </div>
@@ -39,14 +40,30 @@ export default {
   },
   data() {
     return {
-      inputCode: "",
+      inputCode:
+        "#include <iostream>\n" +
+        "using namespace std;\n" +
+        "int main()\n" +
+        "{\n" +
+        "  {\n" +
+        '    cout << "Hello meg" << endl;\n' +
+        "  }\n" +
+        "}",
+      output: "",
     };
   },
   methods: {
     async submitForm() {
-      console.log(this.inputCode);
-      let response = await runCode(this.inputCode);
+      //console.log(this.inputCode);
+      const apiCallObject = {
+        sourceCode: this.inputCode,
+        output: "",
+      };
+      //console.log(apiCallObject);
+      let response = await runCode(apiCallObject);
       console.log(response);
+
+      this.output = response.output;
     },
   },
 };
@@ -78,7 +95,7 @@ html {
   color: white;
 }
 #container {
-  background-color: rgb(236, 152, 42);
+  background-color: rgb(84, 83, 81);
 }
 .content {
   margin: 10px;
@@ -86,8 +103,8 @@ html {
   grid-template-columns: 1fr 1fr;
   grid-gap: 10px;
 }
-h1 {
-  font-size: 120px;
+h2 {
+  font-size: 40px;
   padding: 10px;
 }
 .input {
@@ -101,6 +118,7 @@ textarea {
   border: 1px solid black;
   resize: none;
   font-family: monospace;
+  box-shadow: 2px 3px 3px 3px;
 }
 button {
   color: black;
