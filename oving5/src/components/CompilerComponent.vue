@@ -12,6 +12,9 @@
           rows="20"
         >
         </textarea>
+        <div id="buttonContainer">
+          <button id="compileButton">Compile</button>
+        </div>
       </div>
       <div class="input">
         <label for="inputArea">Output:</label>
@@ -24,7 +27,6 @@
           v-model="output"
         ></textarea>
       </div>
-      <button>Compile</button>
       <p id="info"></p>
     </form>
   </div>
@@ -96,6 +98,9 @@ html {
 }
 #container {
   background-color: rgb(84, 83, 81);
+  width: 800px;
+  margin: 80px auto;
+  box-shadow: 2px 3px 3px 3px;
 }
 .content {
   margin: 10px;
@@ -120,6 +125,9 @@ textarea {
   font-family: monospace;
   box-shadow: 2px 3px 3px 3px;
 }
+#buttonContainer {
+  justify-content: center;
+}
 button {
   color: black;
   padding: 20px;
@@ -128,9 +136,14 @@ button {
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 0;
+  box-shadow: 2px 3px 3px 3px;
+  width: 50%;
 }
 button:hover {
   background-color: cornsilk;
+  transform: scale(101%);
 }
 @media screen and (max-width: 600px) {
   h1 {
