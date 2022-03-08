@@ -24,6 +24,7 @@ public class RestController {
     public SourceCode runCompile(@RequestBody SourceCode sourceCode) throws IOException {
 
         sourceCode.setOutput(service.doCompile(sourceCode));
+        //service.resetCompilation(sourceCode);
         //System.out.println(sourceCode.getSourceCode());
         return sourceCode;
     }
