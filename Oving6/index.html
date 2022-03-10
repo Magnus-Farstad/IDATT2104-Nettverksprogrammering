@@ -27,6 +27,7 @@ WebSocket test site
 
     function onClickSubmit() {
         let message = document.getElementById("message").value;
+        document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML + "</br> You: "+ message;
         ws.send(message);
     }
 </script>

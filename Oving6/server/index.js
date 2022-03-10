@@ -8,10 +8,11 @@ wss.on("connection", ws => {
     ws.on("message", data => {
         console.log("Message from client: " + data.toString());
 
-        ws.send(data.toString());
+        wss.clients.forEach(client => client.send(data.toString()));
     })
 
     ws.on("close", () => {
         console.log("Client disconnected");
+        ws.send("Til alle klienter");
     });
 });
