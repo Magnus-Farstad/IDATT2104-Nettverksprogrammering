@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+</head>
+<body>
+WebSocket test site
+<br/>
+<label>Skriv melding:</label>
+<input type="text" id="message" name="message"><br><br>
+<input type="submit" value="Submit" onclick="onClickSubmit();">
+
+<div id="chat" class="div"></div>
+</body>
+<script>
+    const ws = new WebSocket("ws://localhost:8082");
+
+    ws.addEventListener("open", () => {
+        console.log("We are connected!!")
+    });
+
+    ws.addEventListener("message", (message) => {
+        console.log("Recieved data: " + message.data);
+        document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML + "</br> Friend: "+ message.data;
+    })
+
+    function onClickSubmit() {
+        let message = document.getElementById("message").value;
+        ws.send(message);
+    }
+</script>
+<style>
+    .div {
+        border: 1px solid black;
+        width: 500px;
+        height: auto;
+        margin-top: 10px;
+    }
+</style>
+</html>
