@@ -27,7 +27,7 @@ public class UDPClient {
         // Create the socket object for carrying data
         DatagramSocket ds = new DatagramSocket();
 
-        InetAddress ip = InetAddress.getLocalHost();
+        InetAddress ip = InetAddress.getByName("2001:700:300:4000:304a:6605:f9c2:4dcf");
         byte[] buf = null;
 
         // loop while user not enters "bye"
