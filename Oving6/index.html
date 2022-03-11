@@ -5,13 +5,19 @@
     <title>WebSocket</title>
 </head>
 <body>
-WebSocket test site
+<div id="headerContainer">
+    <h1>WebSocket test site</h1>
+</div>
 <br/>
-<label>Skriv melding:</label>
-<input type="text" id="message" name="message"><br><br>
-<input type="submit" value="Submit" onclick="onClickSubmit();">
+<div id="container">
+    <fieldset>
+        <legend>Skriv melding:</legend>
+        <input type="text" id="message" name="message"><br><br>
+        <input type="submit" value="Submit" onclick="onClickSubmit();">
+    </fieldset>
+    <div id="chat" class="div"></div>
+</div>
 
-<div id="chat" class="div"></div>
 </body>
 <script>
     const ws = new WebSocket("ws://localhost:8082");
@@ -32,11 +38,32 @@ WebSocket test site
     }
 </script>
 <style>
+    #headerContainer {
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        margin: 1.5rem;
+    }
+    h1{
+        width: fit-content;
+        margin: 0 auto;
+    }
     .div {
         border: 1px solid black;
         width: 500px;
         height: auto;
-        margin-top: 10px;
+        margin: 10px;
+    }
+    #container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        width: 520px;
+        border: solid black 1px;
+        box-shadow: 2px 2px 5px 1px;
     }
 </style>
 </html>
