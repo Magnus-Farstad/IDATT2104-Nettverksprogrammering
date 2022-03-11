@@ -23,14 +23,10 @@ public class CompilerService {
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
 
             bufferedWriter.append(sourceCode.getSourceCode());
-            sourceCode.setOutput("Output fra server!!");
+            //sourceCode.setOutput("Output fra server!!");
 
-            Process process = Runtime.getRuntime().exec("docker build --tag java-docker .");
+            Runtime.getRuntime().exec("docker build --tag java-docker .");
             Process process2 = Runtime.getRuntime().exec("docker run java-docker");
-//            process.waitFor();
-//            System.out.println("Finished compiling");
-//            Process proc = Runtime.getRuntime().exec("java " + process);
-//            System.out.println("Finished running");
 
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(process2.getInputStream()));
@@ -41,13 +37,25 @@ public class CompilerService {
 
             int exitValue = process2.waitFor();
             if (exitValue == 0) {
-                System.out.println("Success");
-                System.out.println(output);
+                System.out.println(exitValue);
             }
         } catch (Exception exception) {
             System.out.println(exception);
         }
 
         return output.toString();
+    }
+
+    public void resetCompilation(SourceCode sourceCode) throws IOException {
+        File file = new File("/Users/Farstad/OneDrive/Skole/Andre_aar/Semester_4/Nettverksprogrammering/oving5-server/compile/main.cpp");
+        StringBuilder output = new StringBuilder();
+        try (FileWriter fileWriter = new FileWriter(file);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+
+            bufferedWriter.append(sourceCode.getSourceCode());
+            Runtime.getRuntime().exec("docker build --tag java-docker .");
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        }
     }
 }
